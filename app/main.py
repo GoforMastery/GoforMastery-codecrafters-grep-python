@@ -71,13 +71,24 @@ def positiveCharGroup(given, goal):
 
 
 # why my code is not working i dont know!
+def negativeCharGroup(given, goal):
+    umap = {}
+    for c in goal:
+        umap[c] = True
+    for char in given:
+        if char not in umap:
+            return True
+    return False
 
-import sys
 
-
-def checkBraces(pattern):
+def checkonlyBraces(pattern):
     length = len(pattern)
-    return pattern[0] == "[" and pattern[length - 1] == "]"
+    return pattern[0] == "[" and pattern[length - 1] == "]" and pattern[1] != "^"
+
+
+def checkArrow(pattern):
+    length = len(pattern)
+    return pattern[0] == "[" and pattern[length - 1] == "]" and pattern[1] == "^"
 
 
 def match_pattern(input_line, pattern):
@@ -87,8 +98,10 @@ def match_pattern(input_line, pattern):
         return containsDigit(input_line)
     elif pattern == r"\w":
         return validWord(input_line)
-    elif checkBraces(pattern):
+    elif checkonlyBraces(pattern):
         return positiveCharGroup(input_line, pattern)
+    elif checkArrow(pattern):
+        return negativeCharGroup(input_line, pattern)
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
 
@@ -96,11 +109,11 @@ def match_pattern(input_line, pattern):
 def main():
     pattern = sys.argv[2]
     input_line = sys.stdin.read()
-    print("debugging")
-    print(sys.argv[0])
-    print(sys.argv[1])
-    print(sys.argv[2])
-    print("debugging ended")
+    # print("debugging")
+    # print(sys.argv[0])
+    # print(sys.argv[1])
+    # print(sys.argv[2])
+    # print("debugging ended")
     if sys.argv[1] != "-E":
         print("Expected first argument to be '-E'")
         exit(1)
