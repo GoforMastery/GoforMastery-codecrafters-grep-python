@@ -57,9 +57,27 @@ def validWord(input_line):
     return False
 
 
+def positiveCharGroup(given, goal):
+    # check if you find given in goal.
+    # it acts like c++ unordered_map<char, bool> mp.
+    umap = {}
+    glen = len(goal)
+    for idx in range(1, glen - 1):
+        umap[goal[idx]] = True
+    for c in given:
+        if umap[c] == True:
+            return True
+    return False
+
+
 # why my code is not working i dont know!
 
 import sys
+
+
+def checkBraces(pattern):
+    length = len(pattern)
+    return pattern[0] == "[" and pattern[length - 1] == "]"
 
 
 def match_pattern(input_line, pattern):
@@ -69,6 +87,8 @@ def match_pattern(input_line, pattern):
         return containsDigit(input_line)
     elif pattern == r"\w":
         return validWord(input_line)
+    elif checkBraces(pattern):
+        return positiveCharGroup(input_line, pattern)
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
 
@@ -76,7 +96,11 @@ def match_pattern(input_line, pattern):
 def main():
     pattern = sys.argv[2]
     input_line = sys.stdin.read()
-
+    print("debugging")
+    print(sys.argv[0])
+    print(sys.argv[1])
+    print(sys.argv[2])
+    print("debugging ended")
     if sys.argv[1] != "-E":
         print("Expected first argument to be '-E'")
         exit(1)
