@@ -95,6 +95,27 @@ def containsThis(pattern):
     return "\\w" in pattern or "\\d" in pattern
 
 
+def containsArrow(pattern):
+    for ch in pattern:
+        if ch == "^":
+            return True
+    return False
+
+
+def checkArrowfromStart(input_line, pattern):
+    if len(pattern) > len(input_line):
+        return False
+    i = 1
+    j = 0
+    while i < len(pattern):
+        if pattern[i] != input_line[j]:
+            return False
+        else:
+            i = i + 1
+            j = j + 1
+    return True
+
+
 def findthem(input_line, pattern):
     i = 0
     j = 0
@@ -196,6 +217,8 @@ def match_pattern(input_line, pattern):
         return negativeCharGroup(input_line, pattern)
     elif containsThis(pattern):
         return findthem(input_line, pattern)
+    elif containsArrow(pattern):
+        return checkArrowfromStart(input_line, pattern)
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
 
